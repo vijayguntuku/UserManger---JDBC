@@ -7,17 +7,19 @@ import com.wavemaker.training.db.model.Address;
 import com.wavemaker.training.db.model.department;
 import com.wavemaker.training.db.model.employee;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+
 public class Main {
-    private EmployeeDAO employeeDAO = new EmployeeDAO();
+    private static EmployeeDAO employeeDAO = new EmployeeDAO();
 
-    private DepartmentDAO departmentDAO = new DepartmentDAO();
+    private static DepartmentDAO departmentDAO = new DepartmentDAO();
 
-    private AddressDAO addressDAO = new AddressDAO();
+    private static AddressDAO addressDAO = new AddressDAO();
 
-    public void printemployee() {
-        List<employee> ListOfemployee = employeeDAO.ListOfemployee();
+    public void printemployee() throws SQLException {
+        List<employee> ListOfemployee = employeeDAO.ListOf();
         if (ListOfemployee != null) {
             for (employee emp : ListOfemployee) {
                 System.out.println(emp);
@@ -25,8 +27,8 @@ public class Main {
         }
     }
 
-    public void printdepartment() {
-        List<department> ListOfdepartment = departmentDAO.ListOfdepartment();
+    public void printdepartment() throws SQLException {
+        List<department> ListOfdepartment = departmentDAO.listOfdepartment();
         if (ListOfdepartment != null) {
             for (department dep : ListOfdepartment) {
                 System.out.println(dep);
@@ -34,8 +36,8 @@ public class Main {
         }
     }
 
-    public void printaddress(){
-        List<Address> ListOfaddress = addressDAO.ListOfaddress();
+    public void printaddress() throws SQLException{
+        List<Address> ListOfaddress = addressDAO.ListOf();
         if(ListOfaddress != null ){
             for(Address addr : ListOfaddress){
                 System.out.println(addr);
@@ -43,7 +45,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         Scanner intInput = new Scanner(System.in);
         Scanner stringInput = new Scanner(System.in);
@@ -56,7 +58,7 @@ public class Main {
             System.out.println("2.department table");
             System.out.println("3.address table");
             System.out.println("4.exit");
-            System.out.print("enter your table to perform actions :3");
+            System.out.print("enter your table to perform actions :");
             choice1 = intInput.nextInt();
 
             if (choice1 == 1) {
@@ -78,7 +80,7 @@ public class Main {
                         System.out.println("enter user id to be searched");
                         employeeObject.setId(intInput.nextInt());
 
-                        new Main().employeeDAO.search(employeeObject);
+                        employeeDAO.search(employeeObject);
 
                     } else if (choice2 == 3) {
                         employee employeeObject = new employee();
@@ -93,7 +95,7 @@ public class Main {
                         System.out.println("enter address_id to be inserted");
                         employeeObject.setAddress_id(intInput.nextInt());
 
-                        new Main().employeeDAO.insert(employeeObject);
+                        employeeDAO.insert(employeeObject);
 
 
                     } else if (choice2 == 4) {
@@ -105,14 +107,14 @@ public class Main {
                         System.out.println("enter user mobile to be updated");
                         employeeObject.setMobile(stringInput.nextLine());
 
-                        new Main().employeeDAO.update(employeeObject);
+                        employeeDAO.update(employeeObject);
 
                     } else if (choice2 == 5) {
                         employee employeeObject = new employee();
                         System.out.println("enter user id to be deleted");
                         employeeObject.setId(intInput.nextInt());
 
-                        new Main().employeeDAO.delete(employeeObject);
+                        employeeDAO.delete(employeeObject);
 
                     }
                 } while (choice2 != 6);
@@ -136,7 +138,7 @@ public class Main {
                         System.out.println("enter user id to be searched");
                         departmentObject.setId(intInput.nextInt());
 
-                        new Main().departmentDAO.search(departmentObject);
+                        departmentDAO.search(departmentObject);
 
                     } else if (choice2 == 3) {
                         department departmentObject = new department();
@@ -147,7 +149,7 @@ public class Main {
                         System.out.println("enter Locality to be inserted");
                         departmentObject.setLocality(stringInput.nextLine());
 
-                        new Main().departmentDAO.insert(departmentObject);
+                        departmentDAO.insert(departmentObject);
 
 
                     } else if (choice2 == 4) {
@@ -159,14 +161,14 @@ public class Main {
                         System.out.println("enter locality to be updated");
                         departmentObject.setLocality(stringInput.nextLine());
 
-                        new Main().departmentDAO.update(departmentObject);
+                        departmentDAO.update(departmentObject);
 
                     } else if (choice2 == 5) {
                         department departmentObject = new department();
                         System.out.println("enter department id to be deleted");
                         departmentObject.setId(intInput.nextInt());
 
-                        new Main().departmentDAO.delete(departmentObject);
+                        departmentDAO.delete(departmentObject);
 
                     }
                 } while (choice2 != 6);
@@ -190,7 +192,7 @@ public class Main {
                         System.out.println("enter user id to be searched");
                         address.setId(intInput.nextInt());
 
-                        new Main().addressDAO.search(address);
+                        addressDAO.search(address);
 
                     } else if (choice2 == 3) {
                         Address address = new Address();
@@ -205,7 +207,7 @@ public class Main {
                         System.out.println("enter zip_code to be inserted ");
                         address.setZip_code(intInput.nextInt());
 
-                        new Main().addressDAO.insert(address);
+                        addressDAO.insert(address);
 
 
                     } else if (choice2 == 4) {
@@ -221,7 +223,7 @@ public class Main {
                         System.out.println("enter zip_code to be updated");
                         address.setZip_code(intInput.nextInt());
 
-                        new Main().addressDAO.update(address);
+                        addressDAO.update(address);
 
                     } else if (choice2 == 5) {
                         Address address = new Address();

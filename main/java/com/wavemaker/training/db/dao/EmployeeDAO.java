@@ -11,12 +11,12 @@ import java.util.List;
 
 public class EmployeeDAO {
 
-    public List<employee> ListOfemployee() {
+    public List<employee> ListOf() throws SQLException{
         List<employee> employeeList = new ArrayList<>();
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM employee");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM EMPLOYEE");
             while(resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
@@ -28,16 +28,18 @@ public class EmployeeDAO {
         } catch (SQLException e) {
             System.out.println("First Insert data in address and department table");
             e.printStackTrace();
+        }finally {
+            connection.close();
         }
         return employeeList;
     }
 
 
 
-    public void insert(employee employee){
+    public void insert(employee employee) throws SQLException{
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
-            String sql ="insert into employee(id,name,mobile,department_id,address_id) value(?,?,?,?,?)";
+            String sql ="INSERT INTO EMPLOYEE(id,name,mobile,department_id,address_id) VALUES(?,?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,employee.getId());
             statement.setString(2, employee.getName());
@@ -52,14 +54,16 @@ public class EmployeeDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("exception ");
+        }finally {
+            connection.close();
         }
     }
 
-    public void update(employee employee)
+    public void update(employee employee) throws SQLException
     {
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
-            String sql = "UPDATE employee  SET name=?, mobile=? WHERE id=?";
+            String sql = "UPDATE EMPLOYEE SET name=?, mobile=? WHERE id=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,employee.getName());
             statement.setString(2,employee.getMobile());
@@ -72,14 +76,17 @@ public class EmployeeDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        finally {
+            connection.close();
+        }
 
     }
 
-    public void delete(employee employee)
+    public void delete(employee employee) throws SQLException
     {
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
-            String sql = "DELETE FROM employee where id=?";
+            String sql = "DELETE FROM EMPLOYEE WHERE id=?";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,employee.getId());
@@ -90,13 +97,15 @@ public class EmployeeDAO {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            connection.close();
         }
 
     }
-    public void search(employee employee){
+    public void search(employee employee) throws SQLException{
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
-            String sql ="select * from employee where id=?";
+            String sql ="SELECT * FROM EMPLOYEE  id=?";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1,employee.getId());
@@ -115,6 +124,8 @@ public class EmployeeDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("exception ");
+        }finally {
+            connection.close();
         }
     }
 }

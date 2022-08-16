@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressDAO {
-    public List<Address> ListOfaddress() {
-        List<Address> addressList = new ArrayList<>();
+    public List<Address> ListOf() throws SQLException{
+        List<Address> addressList = new ArrayList<>() ;
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM address");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM ADDRESS");
             while(resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String street = resultSet.getString("street");
@@ -25,10 +25,12 @@ public class AddressDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("exception caught");
+        }finally {
+            connection.close();
         }
         return addressList;
     }
-    public void insert(Address address){
+    public void insert(Address address) throws SQLException{
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
             String sql ="insert into address(id,street,city,state,zip_code) value(?,?,?,?,?)";
@@ -46,14 +48,16 @@ public class AddressDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("exception ");
+        }finally {
+            connection.close();
         }
     }
 
-    public void update(Address address)
+    public void update(Address address) throws SQLException
     {
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
-            String sql = "UPDATE address  SET street=?, city=? ,state=? ,zip_code =?  WHERE id=?";
+            String sql = "UPDATE ADDRESS SET street=?, city=? ,state=? ,zip_code =?  WHERE id=?";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setString(1, address.getStreet());
@@ -68,15 +72,17 @@ public class AddressDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            connection.close();
         }
 
     }
 
-    public void delete(Address address)
+    public void delete(Address address) throws SQLException
     {
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
-            String sql = "DELETE FROM address where id=?";
+            String sql = "DELETE FROM ADDRESS where id=?";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,address.getId());
@@ -87,13 +93,15 @@ public class AddressDAO {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            connection.close();
         }
 
     }
-    public void search(Address address){
+    public void search(Address address) throws SQLException{
         Connection connection = MySQLConnectionUtility.getConnection();
         try {
-            String sql ="select * from address where id=?";
+            String sql ="SELECT * FROM ADDRESS WHERE id=?";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1,address.getId());
@@ -112,6 +120,8 @@ public class AddressDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("exception ");
+        }finally {
+            connection.close();
         }
     }
 }
